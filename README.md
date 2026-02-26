@@ -10,7 +10,7 @@
 
 The GritOS CFB Recruiting Map displays **661 college football programs** across the United States on a filterable, interactive map. Every pin represents a real program with a full data card — covering division, conference, academic selectivity, financial metrics, admission and graduation rates, and direct links to recruiting questionnaires where available.
 
-The map is built around a core GritOS philosophy: **the "Platinum Opportunity."** Rather than chasing full D1 scholarships that may never materialize, this tool helps families identify programs at academically selective institutions — many offering partial or no athletic scholarships — that deliver the highest long-term return on investment through career placement, alumni networks, and institutional prestige.
+While collegiate football played at higher education institutions that offer full or partial athletic aid is commonly perceived as the Golden Opportunity for scholar-athletes, the map is built around a core GritOS philosophy: **the "Platinum Opportunity."** Rather than chasing full D1 scholarships that may never materialize, this tool helps families identify programs at academically selective institutions — many offering partial or no athletic scholarships — that deliver the highest long-term return on investment through career placement, alumni networks, and institutional prestige.
 
 ---
 
