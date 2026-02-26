@@ -323,7 +323,7 @@ This is a single static HTML file with no server-side dependencies.
 
 ## About Gritty OS
 
-Gritty OS is a college football recruiting advisory service that helps student-athletes and families navigate selective colleges offering partial or no athletic scholarships. We use data analysis, financial modeling, and recruiting strategy to identify market inefficiencies in college admissions and athletic recruiting — and help families capitalize on them.
+Gritty OS is a college football recruiting advisory consortium and open-source platform that helps student-athletes and families navigate selective colleges offering partial or no athletic scholarships. We use data analysis, financial modeling, and recruiting strategy to identify market inefficiencies in college admissions and athletic recruiting — and help families capitalize on them.
 
 **[https://www.skool.com/verify-grit-2176](https://www.skool.com/verify-grit-2176)** | Built by [Chris Conroy](https://beacons.ai/coachconroy)
 
