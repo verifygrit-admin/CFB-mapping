@@ -1,8 +1,8 @@
-# GritOS CFB Recruiting Map
+# 🏈 GritOS CFB Recruiting Map
 
 **An interactive intelligence tool for college football recruiting — built for student-athletes, families, and coaches who want to find the right fit, not just the biggest name.**
 
-🔗 **[View the Live Map →]([https://verifygrit-admin.github.io/CFB-mapping](https://verifygrit-admin.github.io/CFB-mapping/cfbrecruit-map.html))**
+🔗 **[View the Live Map →](https://verifygrit-admin.github.io/CFB-mapping/cfbrecruit-map.html)**
 
 ---
 
@@ -45,12 +45,12 @@ The left panel contains six filters that work together in real time. Every chang
 
 ---
 
-#### Search
+#### 🔍 Search
 Type any school name, city, or state abbreviation. Results update as you type. This is the fastest path to a specific school or to narrow geographically (e.g., type "NY" to see only New York programs).
 
 ---
 
-#### Division Tier
+#### 🏷️ Division Tier
 Six colored toggle buttons represent the six division tiers. Click any button to show or hide that tier. Click **All** to toggle every tier on or off at once.
 
 | Button Color | Tier | Conferences Included |
@@ -66,7 +66,7 @@ Six colored toggle buttons represent the six division tiers. Click any button to
 
 ---
 
-#### School Type (Selectivity)
+#### 🎓 School Type (Selectivity)
 Filters programs by academic admission selectivity, derived from IPEDS data:
 
 | Tier | Approximate Admission Rate |
@@ -82,12 +82,12 @@ Filters programs by academic admission selectivity, derived from IPEDS data:
 
 ---
 
-#### Conference
+#### 🏟️ Conference
 Narrows the map to a single athletic conference. All 50+ conferences in the dataset are available. Useful when a player has a specific conference target or when a coach is researching a particular league.
 
 ---
 
-#### ADLTV Rank (Top N)
+#### 📊 ADLTV Rank (Top N)
 **ADLTV (Athletic Degree Lifetime Value)** is GritOS's proprietary metric estimating the long-term career earnings premium associated with each institution's degree — incorporating graduation rates, median post-graduate earnings, and institutional reputation in the context of athletic opportunity.
 
 Filter to **Top 25, 50, 100, 150, or 200** to isolate the programs GritOS considers highest-value regardless of division.
@@ -104,7 +104,7 @@ This filter is the map's most strategically important control. It deliberately c
 
 ---
 
-#### State
+#### 🗺️ State
 Filter to a single state. Useful for families with geographic constraints or coaches building regional pipelines.
 
 ---
