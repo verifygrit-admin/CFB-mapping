@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +12,14 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
 <style>
   :root {
-    --bg: #0a0c10;
-    --surface: #111419;
-    --surface2: #181c24;
-    --border: #232830;
-    --accent: #f5a623;
-    --accent2: #e8631a;
-    --text: #e8eaf0;
-    --muted: #7a8494;
+    --bg: #080d0a;
+    --surface: #0e1510;
+    --surface2: #141e16;
+    --border: #1e2e21;
+    --accent: #6ed430;
+    --accent2: #4caf1e;
+    --text: #e8edf0;
+    --muted: #6b8c72;
     --p4: #f5a623;
     --g5: #4fc3f7;
     --fcs: #81c784;
@@ -319,16 +320,16 @@
   .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
     background-clip: padding-box;
   }
-  .marker-cluster-small div { background: rgba(245,166,35,0.85); }
-  .marker-cluster-medium div { background: rgba(232,99,26,0.85); }
-  .marker-cluster-large div { background: rgba(200,50,50,0.85); }
+  .marker-cluster-small div { background: rgba(110,212,48,0.85); }
+  .marker-cluster-medium div { background: rgba(76,175,30,0.85); }
+  .marker-cluster-large div { background: rgba(40,120,20,0.85); }
   .marker-cluster div { color: #000; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Grit<span>OS</span></div>
+  <div class="logo">Gritty<span>OS</span></div>
   <div class="header-divider"></div>
   <div class="header-title">CFB Recruiting Center — School Map</div>
   <div class="school-count">Showing <strong id="visibleCount">661</strong> programs</div>
@@ -464,7 +465,7 @@ states.forEach(s => { const o = document.createElement('option'); o.value = s; o
 function makeIcon(tier) {
   const color = TIER_COLORS[tier] || '#aaa';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
-    <circle cx="7" cy="7" r="6" fill="${color}" stroke="#0a0c10" stroke-width="1.5"/>
+    <circle cx="7" cy="7" r="6" fill="${color}" stroke="#080d0a" stroke-width="1.5"/>
   </svg>`;
   return L.divIcon({
     className: '',
