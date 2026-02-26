@@ -18,7 +18,7 @@ The conventional wisdom in college football recruiting — what most families pu
 
 But for the vast majority of talented student-athletes, that path leads to years of waiting, uncertain outcomes, and decisions made under pressure without full information. Families optimize for scholarship dollars and division labels while overlooking something more durable: the long-term value of the institution itself.
 
-The **Platinum Opportunity** is Gritty OS's reframe. It recognizes that a student-athlete who attends a highly selective institution — even without a full scholarship, even in Division III or FCS — often emerges with greater career earnings, stronger alumni networks, and better life outcomes than a peer who chased a D1 offer to a less selective school. The ADLTV (Athletic Degree Lifetime Value) metric embedded in this map is designed to make that argument visible and quantifiable across all 661 programs. The Platinum Opportunity is not a consolation prize. In many cases, it is the better deal.
+The **Platinum Opportunity** is Gritty OS's reframe. It recognizes that a student-athlete who attends a highly selective institution — even without a full scholarship, even in Division III or FCS — often emerges with greater career earnings, stronger alumni networks, and better long-term quality-of-life outcomes than a peer who chased a D1 offer to a less selective school. The ADLTV (Athletic Degree Lifetime Value) metric embedded in this map is designed to make that argument visible and quantifiable across all 661 programs. The Platinum Opportunity is not a consolation prize. In many cases, it is the better deal.
 
 ---
 
