@@ -2,7 +2,7 @@
 
 **An interactive intelligence tool for college football recruiting — built for student-athletes, families, and coaches who want to find the right fit, not just the biggest name.**
 
-🔗 **[[View the Live Map] > [https://verifygrit-admin.github.io/CFB-mapping/cfbrecruit-map.html]**
+🔗 **View the Live Map > [https://verifygrit-admin.github.io/CFB-mapping/cfbrecruit-map.html]**
 
 ---
 
