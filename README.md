@@ -1,6 +1,8 @@
-# 🏈 GritOS CFB Recruiting Map
+# 🏈 Gritty OS CFB Recruiting Map
 
-**An interactive intelligence tool for college football recruiting — built for student-athletes, families, and coaches who want to find the right fit, not just the biggest name.**
+**An open-source interactive intelligence tool for college football recruiting — built for student-athletes, families, and coaches who want to find the right fit, not just the biggest name.**
+
+> **⚠️ This is not a recruiting service and not a scouting service.** This tool does not connect athletes to coaches, evaluate player talent, or facilitate contact between any parties. It is a publicly available data visualization resource. Use it to research programs, inform your decision-making, and build your own strategy.
 
 🔗 **[View the Live Map →](https://verifygrit-admin.github.io/CFB-mapping/cfbrecruit-map.html)**
 
@@ -8,9 +10,15 @@
 
 ## What This Tool Does
 
-The GritOS CFB Recruiting Map displays **661 college football programs** across the United States on a filterable, interactive map. Every pin represents a real program with a full data card — covering division, conference, academic selectivity, financial metrics, admission and graduation rates, and direct links to recruiting questionnaires where available.
+The Gritty OS CFB Recruiting Map displays **661 college football programs** across the United States on a filterable, interactive map. Every pin represents a real program with a full data card — covering division, conference, academic selectivity, financial metrics, admission and graduation rates, and direct links to recruiting questionnaires where available.
 
-While collegiate football played at higher education institutions that offer full or partial athletic aid is commonly perceived as the Golden Opportunity for scholar-athletes, the map is built around a core GritOS philosophy: **the "Platinum Opportunity."** Rather than chasing full D1 scholarships that may never materialize, this tool helps families identify programs at academically selective institutions — many offering partial or no athletic scholarships — that deliver the highest long-term return on investment through career placement, alumni networks, and institutional prestige.
+### The Golden Opportunity vs. The Platinum Opportunity
+
+The conventional wisdom in college football recruiting — what most families pursue by default — is what we call the **Golden Opportunity**: a full or near-full athletic scholarship to a Division I program. It is the dream that drives millions of families through club teams, camps, and highlight reels. And for a small number of elite athletes, it is real.
+
+But for the vast majority of talented student-athletes, that path leads to years of waiting, uncertain outcomes, and decisions made under pressure without full information. Families optimize for scholarship dollars and division labels while overlooking something more durable: the long-term value of the institution itself.
+
+The **Platinum Opportunity** is Gritty OS's reframe. It recognizes that a student-athlete who attends a highly selective institution — even without a full scholarship, even in Division III or FCS — often emerges with greater career earnings, stronger alumni networks, and better life outcomes than a peer who chased a D1 offer to a less selective school. The ADLTV (Athletic Degree Lifetime Value) metric embedded in this map is designed to make that argument visible and quantifiable across all 661 programs. The Platinum Opportunity is not a consolation prize. In many cases, it is the better deal.
 
 ---
 
@@ -88,9 +96,9 @@ Narrows the map to a single athletic conference. All 50+ conferences in the data
 ---
 
 #### 📊 ADLTV Rank (Top N)
-**ADLTV (Athletic Degree Lifetime Value)** is GritOS's proprietary metric estimating the long-term career earnings premium associated with each institution's degree — incorporating graduation rates, median post-graduate earnings, and institutional reputation in the context of athletic opportunity.
+**ADLTV (Athletic Degree Lifetime Value)** is Gritty OS's proprietary metric estimating the long-term career earnings premium associated with each institution's degree — incorporating graduation rates, median post-graduate earnings, and institutional reputation in the context of athletic opportunity.
 
-Filter to **Top 25, 50, 100, 150, or 200** to isolate the programs GritOS considers highest-value regardless of division.
+Filter to **Top 25, 50, 100, 150, or 200** to isolate the programs Gritty OS considers highest-value regardless of division.
 
 A few examples from the Top 10:
 - **#1 — MIT** (Division III, NEWMAC) · $4,308,227
@@ -100,7 +108,7 @@ A few examples from the Top 10:
 - **#5 — Carnegie Mellon** (Division III, PAC) · $3,566,646
 - **#6 — Bentley** (Division II, NE10) · $3,378,443
 
-This filter is the map's most strategically important control. It deliberately cuts across divisions — a family filtering to Top 50 will see MIT, Harvard, Carnegie Mellon, and Villanova sitting alongside Power 4 schools. This is the GritOS thesis made visual: **division tier and career value are not the same thing.**
+This filter is the map's most strategically important control. It deliberately cuts across divisions — a family filtering to Top 50 will see MIT, Harvard, Carnegie Mellon, and Villanova sitting alongside Power 4 schools. This is the Gritty OS thesis made visual: **division tier and career value are not the same thing.**
 
 ---
 
@@ -124,8 +132,8 @@ Click any pin to open its data card:
 | **Tier Badge** | Division tier, color-coded to match the legend |
 | **Conference** | Athletic conference |
 | **School Type** | Academic selectivity tier |
-| **ADLTV** | GritOS estimated lifetime degree value (dollar figure) |
-| **ADLTV Rank** | GritOS rank out of 661 programs |
+| **ADLTV** | Gritty OS estimated lifetime degree value (dollar figure) |
+| **ADLTV Rank** | Gritty OS rank out of 661 programs |
 | **Admission Rate** | % of applicants admitted (IPEDS source) |
 | **Graduation Rate** | 6-year graduation rate (IPEDS source) |
 | **COA (Out-of-State)** | Total annual cost of attendance |
@@ -150,7 +158,7 @@ If no questionnaire link is available, the button is not shown. Schools whose qu
 
 The UX is intentionally built around **progressive disclosure** — start with the full landscape, filter down to a precise target. The default view shows all 661 programs so users begin with complete awareness before narrowing. Filters are additive (AND logic), meaning you can simultaneously filter by tier + selectivity + ADLTV rank + state to arrive at a tightly scoped list.
 
-**The dark color palette** (charcoal backgrounds, amber accent) matches GritOS brand standards and improves map legibility — the six tier colors read clearly against the Carto Dark Matter basemap even at maximum cluster density.
+**The color palette** (deep forest green backgrounds, neon green accent) reflects Gritty OS brand identity and improves map legibility — the six tier colors read clearly against the dark green basemap even at maximum cluster density.
 
 **The ADLTV filter** is positioned last in the sidebar but is the most strategically differentiated control in the tool. It surfaces a non-obvious truth: the programs most worth a family's serious attention are not always the ones with the most prominent football brands.
 
@@ -204,7 +212,7 @@ All program data is embedded as a JavaScript constant `SCHOOLS` — an array of 
 **`tier` enum values** (6 levels):
 `"Power 4"` | `"Group of 5"` | `"FBS Ind"` | `"FCS"` | `"Division II"` | `"Division III"`
 
-**Note on `div` vs `tier`:** The `div` field is the raw IPEDS/NCAA classification. The `tier` field reflects GritOS's subdivision of FBS into Power 4, Group of 5, and FBS Independent — used for pin coloring and filter logic. `div` appears in the popup footer.
+**Note on `div` vs `tier`:** The `div` field is the raw IPEDS/NCAA classification. The `tier` field reflects Gritty OS's subdivision of FBS into Power 4, Group of 5, and FBS Independent — used for pin coloring and filter logic. `div` appears in the popup footer.
 
 **Note on duplicate UNITIDs:** Pennsylvania Western University (3 campuses) and Commonwealth University of Pennsylvania (2 campuses) each appear as multiple records sharing one `unitid` because each campus location fields a separate football program with a distinct city coordinate. This is intentional.
 
@@ -303,21 +311,21 @@ This is a single static HTML file with no server-side dependencies.
 
 | Field | Source |
 |---|---|
-| Division, Conference | NCAA / GritOS internal database |
+| Division, Conference | NCAA / Gritty OS internal database |
 | Admission Rate, Graduation Rate, COA | IPEDS (Integrated Postsecondary Education Data System) |
 | Geographic Coordinates | IPEDS institution coordinates |
-| ADLTV, ADLTV Rank | GritOS proprietary model |
+| ADLTV, ADLTV Rank | Gritty OS proprietary model |
 | Merit Aid | IPEDS institutional grant aid averages |
 | Recruiting Questionnaire URLs | Manually collected from athletic department websites |
-| Academic Selectivity Tier | GritOS classification derived from IPEDS admission rates |
+| Academic Selectivity Tier | Gritty OS classification derived from IPEDS admission rates |
 
 ---
 
-## About GritOS
+## About Gritty OS
 
-GritOS is a college football recruiting advisory service that helps student-athletes and families navigate selective colleges offering partial or no athletic scholarships. We use data analysis, financial modeling, and recruiting strategy to identify market inefficiencies in college admissions and athletic recruiting — and help families capitalize on them.
+Gritty OS is a college football recruiting advisory service that helps student-athletes and families navigate selective colleges offering partial or no athletic scholarships. We use data analysis, financial modeling, and recruiting strategy to identify market inefficiencies in college admissions and athletic recruiting — and help families capitalize on them.
 
-**[gritos.com](https://www.gritos.com)** | Built by Chris Conroy
+**[gritos.com](https://www.gritos.com)** | Built by [Chris Conroy](beacons.ai/coachconroy)
 
 ---
 
