@@ -440,10 +440,13 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   width: 100%; max-width: 520px;
-  max-height: 90dvh; overflow-y: auto;
-  padding: 28px 28px 20px;
+  max-height: 90vh; max-height: 90svh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  padding: 28px 28px 0;
   position: relative;
 }
+.tut-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
 #tutClose {
   position: absolute; top: 12px; right: 14px;
@@ -513,8 +516,9 @@
 
 /* Footer */
 .tut-footer {
+  flex-shrink: 0;
   display: flex; align-items: center; justify-content: space-between;
-  margin-top: 20px; padding-top: 16px;
+  padding: 16px 0 20px;
   border-top: 1px solid var(--border);
 }
 .tut-pips { display: flex; gap: 6px; }
@@ -901,6 +905,7 @@ applyFilters = function() { _origApplyFilters(); updateFilterBadge(); };
   <div id="tutCard">
     <button id="tutClose" aria-label="Close tutorial">&#x2715;</button>
 
+    <div class="tut-body">
     <div class="tut-slide">
       <div class="tut-num">1 of 4</div>
       <h2 class="tut-h">Welcome to the GrittyOS CFB Map</h2>
@@ -981,6 +986,7 @@ applyFilters = function() { _origApplyFilters(); updateFilterBadge(); };
         </div>
       </div>
     </div>
+    </div><!-- /.tut-body -->
 
     <div class="tut-footer">
       <div class="tut-pips">
