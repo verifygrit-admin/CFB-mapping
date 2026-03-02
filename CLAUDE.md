@@ -74,7 +74,7 @@ Drop updated CSV into this folder and run the injection script from that project
 
 ## Design System
 - Dark theme — CSS custom properties in `:root`
-- Primary accent: `#6ed430` (green)
+- Primary accent (CSS var): `#6ed430` (neon green — hover/brand use only); active filter buttons use `#2e6b18` (dark forest green) with `#c8f5a0` light text
 - Tier colors: Power 4 `#f5a623`, FCS `#81c784`, FBS `#ce93d8`, D2 `#ef9a9a`, D3 `#b0bec5`, G5 `#4fc3f7`
 - Fonts: Barlow Condensed (headers/logo), Barlow (body)
 

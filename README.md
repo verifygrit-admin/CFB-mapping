@@ -74,7 +74,7 @@ Six colored toggle buttons represent the six division tiers. Click any button to
 
 ---
 
-#### 🎓 School Type (Selectivity)
+#### 🎓 Admissions Selectivity
 Filters programs by academic admission selectivity, derived from IPEDS data:
 
 | Tier | Approximate Admission Rate |
@@ -131,7 +131,7 @@ Click any pin to open its data card:
 | **School Name & Location** | Institution name, city, state |
 | **Tier Badge** | Division tier, color-coded to match the legend |
 | **Conference** | Athletic conference |
-| **School Type** | Academic selectivity tier |
+| **Admissions Select.** | Academic selectivity tier |
 | **ADLTV** | Gritty OS estimated lifetime degree value (dollar figure) |
 | **ADLTV Rank** | Gritty OS rank out of 661 programs |
 | **Admission Rate** | % of applicants admitted (IPEDS source) |
@@ -148,7 +148,7 @@ If no questionnaire link is available, the button is not shown. Schools whose qu
 
 ### Map Behavior
 
-- **Pins cluster automatically** at lower zoom levels. Cluster bubbles shift color from **amber → orange → red** as density increases. Click any cluster to zoom in and expand the pins.
+- **Pins cluster automatically** at lower zoom levels. Cluster bubbles shift from **medium to deep forest green** as density increases. Click any cluster to zoom in and expand the pins.
 - **Pan and zoom** freely — scroll to zoom, click-drag to pan.
 - **Popups close** when you click elsewhere or open a different pin.
 
@@ -158,7 +158,7 @@ If no questionnaire link is available, the button is not shown. Schools whose qu
 
 The UX is intentionally built around **progressive disclosure** — start with the full landscape, filter down to a precise target. The default view shows all 661 programs so users begin with complete awareness before narrowing. Filters are additive (AND logic), meaning you can simultaneously filter by tier + selectivity + ADLTV rank + state to arrive at a tightly scoped list.
 
-**The color palette** (deep forest green backgrounds, neon green accent) reflects Gritty OS brand identity and improves map legibility — the six tier colors read clearly against the dark green basemap even at maximum cluster density.
+**The color palette** (deep forest green backgrounds, dark forest green accent) reflects Gritty OS brand identity and improves map legibility — the six tier colors read clearly against the dark green basemap even at maximum cluster density.
 
 **The ADLTV filter** is positioned last in the sidebar but is the most strategically differentiated control in the tool. It surfaces a non-obvious truth: the programs most worth a family's serious attention are not always the ones with the most prominent football brands.
 
