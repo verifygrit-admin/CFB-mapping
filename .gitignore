@@ -1,0 +1,5 @@
+# Backups
+*_backup_*.html
+
+# Data files (source CSVs — not part of the app)
+*.csv
