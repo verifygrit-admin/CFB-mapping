@@ -14,10 +14,11 @@ Interactive map of all 661 NCAA college football programs for GritOS recruiting 
 ## File Structure
 ```
 CFB-mapping/
-├── cfbrecruit-map.html   ← entire app (HTML + CSS + JS + data)
+├── cfbrecruit-map.html      ← entire app (HTML + CSS + JS + data)
+├── inject_coach_link.py     ← injects coach_link from GrittyOS DB CSV
 ├── CLAUDE.md
 ├── README.md
-└── .gitignore            ← excludes *_backup_*.html and *.csv
+└── .gitignore               ← excludes *_backup_*.html and *.csv
 ```
 
 ## School Data
@@ -39,13 +40,24 @@ School data is embedded as a JSON array inside `cfbrecruit-map.html`. Each objec
 | `grad_rate` | Graduation rate |
 | `coa_out` | Cost of attendance (out-of-state) |
 | `merit` | Merit aid estimate |
-| `q_link` | Recruiting questionnaire URL (populated from GrittyOS DB) |
+| `q_link` | Recruiting questionnaire URL — 592 of 661 populated |
+| `coach_link` | Football coaching staff page URL — 552 of 661 populated |
 
 ## Updating School Data
-The source of truth for `q_link` values is:
+The source of truth for both `q_link` and `coach_link` is:
 `C:\Users\chris\dev\recruitingq-url-extract\Gritty OS - CFB Recruiting Center - Example 2027 - GrittyOS DB.csv`
 
-To update, drop the CSV into this folder and run the injection script (see `recruitingq-url-extract` project). Join key is `UNITID` → `unitid`.
+Join key: `UNITID` (CSV) → `unitid` (HTML object).
+
+### To re-inject coach_link after CSV updates:
+```
+cd C:\Users\chris\dev\CFB-mapping
+python inject_coach_link.py
+```
+Script is idempotent — strips existing `coach_link` values before re-injecting.
+
+### To re-inject q_link (see recruitingq-url-extract project):
+Drop updated CSV into this folder and run the injection script from that project.
 
 ## Design System
 - Dark theme — CSS custom properties in `:root`
