@@ -33,7 +33,7 @@ School data is embedded as a JSON array inside `cfbrecruit-map.html`. Each objec
 | `conf` | Conference abbreviation |
 | `city` / `state` | Location |
 | `lat` / `lng` | Coordinates for map placement |
-| `type` | School type |
+| `type` | School selectivity tier (see thresholds below) |
 | `adltv` | Adjusted Lifetime Value |
 | `adltv_rank` | ADLTV rank |
 | `adm_rate` | Admissions rate |
@@ -42,6 +42,19 @@ School data is embedded as a JSON array inside `cfbrecruit-map.html`. Each objec
 | `merit` | Merit aid estimate |
 | `q_link` | Recruiting questionnaire URL — 592 of 661 populated |
 | `coach_link` | Football coaching staff page URL — 552 of 661 populated |
+
+## School Selectivity Tiers (`type` field)
+
+| Value | Admissions Rate | Schools |
+|---|---|---|
+| `Super Elite` | ≤ 10% | 22 |
+| `Elite` | 11–19% | 27 |
+| `Very Selective` | 20–29% | 18 |
+| `Selective` | 30–49% | 54 |
+| `Somewhat Selective` | 50–67% | 95 |
+| `Standard` | > 67% | 445 |
+
+Used by the School Type (Selectivity) dropdown filter. Thresholds are applied to the `adm_rate` field at data-build time; the filter matches `s.type` directly at runtime.
 
 ## Updating School Data
 The source of truth for both `q_link` and `coach_link` is:
