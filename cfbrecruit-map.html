@@ -93,6 +93,21 @@
     font-weight: 700;
   }
 
+  #tutHelpBtn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  #tutHelpBtn:hover { border-color: var(--accent); color: var(--accent); }
+
   /* LAYOUT */
   .main {
     display: flex;
@@ -542,6 +557,7 @@
   <div class="header-divider"></div>
   <div class="header-title">CFB Recruiting Center — School Map</div>
   <div class="school-count">Showing <strong id="visibleCount">661</strong> programs</div>
+  <button id="tutHelpBtn" aria-label="Open tutorial">?</button>
 </header>
 
 <div class="main">
@@ -982,7 +998,6 @@ applyFilters = function() { _origApplyFilters(); updateFilterBadge(); };
 <script>
 (function() {
   const SEEN_KEY = 'gritos_cfb_tutorial_seen';
-  if (localStorage.getItem(SEEN_KEY)) return;
 
   const overlay  = document.getElementById('tutOverlay');
   const slides   = Array.from(document.querySelectorAll('.tut-slide'));
@@ -1005,12 +1020,19 @@ applyFilters = function() { _origApplyFilters(); updateFilterBadge(); };
     overlay.classList.add('hidden');
   }
 
+  function open() {
+    overlay.classList.remove('hidden');
+    show(0);
+  }
+
   btnNext.addEventListener('click', () => current < slides.length - 1 ? show(current + 1) : dismiss());
   btnPrev.addEventListener('click', () => { if (current > 0) show(current - 1); });
   btnClose.addEventListener('click', dismiss);
   overlay.addEventListener('click', e => { if (e.target === overlay) dismiss(); });
+  document.getElementById('tutHelpBtn').addEventListener('click', open);
 
-  show(0);
+  if (!localStorage.getItem(SEEN_KEY)) show(0);
+  else overlay.classList.add('hidden');
 })();
 </script>
 </body>
