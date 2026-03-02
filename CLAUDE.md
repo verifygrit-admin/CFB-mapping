@@ -54,7 +54,7 @@ School data is embedded as a JSON array inside `cfbrecruit-map.html`. Each objec
 | `Somewhat Selective` | 50–67% | 95 |
 | `Standard` | > 67% | 445 |
 
-Used by the School Type (Selectivity) dropdown filter. Thresholds are applied to the `adm_rate` field at data-build time; the filter matches `s.type` directly at runtime.
+Used by the **Admissions Selectivity** sidebar filter (label updated from "School Type (Selectivity)"). Thresholds are applied to the `adm_rate` field at data-build time; the filter matches `s.type` directly at runtime. The school popup displays this value under the label **"Admissions Select."**
 
 ## Updating School Data
 The source of truth for both `q_link` and `coach_link` is:
