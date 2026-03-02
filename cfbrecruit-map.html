@@ -409,6 +409,129 @@
     .header-title { display: none; }
     .header-divider { display: none; }
   }
+
+/* ── TUTORIAL MODAL ─────────────────────────────────────────── */
+#tutOverlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+#tutOverlay.hidden { display: none; }
+
+#tutCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 100%; max-width: 520px;
+  max-height: 90dvh; overflow-y: auto;
+  padding: 28px 28px 20px;
+  position: relative;
+}
+
+#tutClose {
+  position: absolute; top: 12px; right: 14px;
+  background: transparent; border: none;
+  color: var(--muted); font-size: 20px;
+  cursor: pointer; padding: 4px 8px;
+}
+#tutClose:hover { color: var(--text); }
+
+.tut-slide { display: none; }
+.tut-slide.active { display: block; }
+
+.tut-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+.tut-h {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--text); margin-bottom: 12px; line-height: 1.2;
+}
+.tut-p { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 14px; }
+.tut-tip {
+  font-size: 13px; color: var(--muted);
+  background: var(--surface2);
+  border-left: 3px solid var(--accent);
+  padding: 8px 12px; border-radius: 0 3px 3px 0;
+  margin-top: 12px; line-height: 1.5;
+}
+
+/* Slide 1 — legend */
+.tut-legend { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+.tut-legend-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text); }
+.tut-swatch { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+/* Slide 2 — definitions */
+.tut-defs { display: flex; flex-direction: column; gap: 10px; }
+.tut-def-row { display: flex; flex-direction: column; gap: 2px; }
+.tut-def-term {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  color: var(--accent);
+}
+.tut-def-desc { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* Slide 3 — list */
+.tut-list { padding-left: 18px; margin: 0 0 4px; display: flex; flex-direction: column; gap: 8px; }
+.tut-list li { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+/* Slide 4 — action blocks */
+.tut-action {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 12px; margin-bottom: 10px;
+}
+.tut-action-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+.tut-action-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px; font-weight: 700;
+  color: var(--text); margin-bottom: 4px;
+}
+.tut-action-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* Footer */
+.tut-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.tut-pips { display: flex; gap: 6px; }
+.tut-pip { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
+.tut-pip.active { background: var(--accent); }
+.tut-nav { display: flex; gap: 8px; }
+
+.tut-ghost-btn {
+  padding: 8px 16px; background: transparent;
+  border: 1px solid var(--border); color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  text-transform: uppercase; border-radius: 3px;
+  cursor: pointer; transition: all 0.15s;
+}
+.tut-ghost-btn:hover { border-color: var(--text); color: var(--text); }
+.tut-ghost-btn:disabled { opacity: 0.3; cursor: default; }
+
+.tut-primary-btn {
+  padding: 8px 20px;
+  background: var(--accent); border: 1px solid var(--accent);
+  color: #000; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; border-radius: 3px;
+  cursor: pointer; transition: background 0.15s;
+}
+.tut-primary-btn:hover { background: var(--accent2); border-color: var(--accent2); }
+
+@media (max-width: 768px) {
+  #tutCard { padding: 20px 16px 16px; }
+  .tut-h { font-size: 19px; }
+}
 </style>
 </head>
 <body>
@@ -756,6 +879,139 @@ function updateFilterBadge() {
 const _origApplyFilters = applyFilters;
 applyFilters = function() { _origApplyFilters(); updateFilterBadge(); };
 
+</script>
+
+<div id="tutOverlay">
+  <div id="tutCard">
+    <button id="tutClose" aria-label="Close tutorial">&#x2715;</button>
+
+    <div class="tut-slide">
+      <div class="tut-num">1 of 4</div>
+      <h2 class="tut-h">Welcome to the GrittyOS CFB Map</h2>
+      <p class="tut-p">This map shows all 661 college football programs in the U.S. Each colored dot is a school. Here's what the colors mean:</p>
+      <div class="tut-legend">
+        <div class="tut-legend-row"><span class="tut-swatch" style="background:#f5a623"></span><span><strong>Power 4</strong> — Big Ten, SEC, ACC, Big 12</span></div>
+        <div class="tut-legend-row"><span class="tut-swatch" style="background:#4fc3f7"></span><span><strong>Group of 5</strong> — Mid-major FBS conferences</span></div>
+        <div class="tut-legend-row"><span class="tut-swatch" style="background:#ce93d8"></span><span><strong>FBS Independent</strong> — No conference</span></div>
+        <div class="tut-legend-row"><span class="tut-swatch" style="background:#81c784"></span><span><strong>FCS</strong> — Division I, smaller conferences</span></div>
+        <div class="tut-legend-row"><span class="tut-swatch" style="background:#ef9a9a"></span><span><strong>Division II</strong></span></div>
+        <div class="tut-legend-row"><span class="tut-swatch" style="background:#b0bec5"></span><span><strong>Division III</strong></span></div>
+      </div>
+      <p class="tut-tip">💡 When schools are close together, they group into a numbered bubble. Zoom in or tap the bubble to see them individually.</p>
+    </div>
+
+    <div class="tut-slide">
+      <div class="tut-num">2 of 4</div>
+      <h2 class="tut-h">Tap Any School to See Details</h2>
+      <p class="tut-p">Click or tap any dot to open that school's info card. Here's what the numbers mean:</p>
+      <div class="tut-defs">
+        <div class="tut-def-row">
+          <span class="tut-def-term">ADLTV</span>
+          <span class="tut-def-desc">Adjusted Degree Lifetime Value. Takes the average earnings over 40 years for graduates of that school, then adjusts for the 6-year graduation rate — a realistic picture of long-term career value. Higher is better.</span>
+        </div>
+        <div class="tut-def-row">
+          <span class="tut-def-term">ADLTV Rank</span>
+          <span class="tut-def-desc">Where the school ranks out of all 661 programs by career value.</span>
+        </div>
+        <div class="tut-def-row">
+          <span class="tut-def-term">Admissions Rate</span>
+          <span class="tut-def-desc">The percent of applicants who get accepted.</span>
+        </div>
+        <div class="tut-def-row">
+          <span class="tut-def-term">Grad Rate</span>
+          <span class="tut-def-desc">The percent of students who finish within 6 years.</span>
+        </div>
+        <div class="tut-def-row">
+          <span class="tut-def-term">Cost of Attendance</span>
+          <span class="tut-def-desc">Estimated yearly cost to attend (out-of-state).</span>
+        </div>
+        <div class="tut-def-row">
+          <span class="tut-def-term">Merit Aid</span>
+          <span class="tut-def-desc">Average scholarship money available to students.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tut-slide">
+      <div class="tut-num">3 of 4</div>
+      <h2 class="tut-h">Filter Schools to Find Your Fit</h2>
+      <p class="tut-p">Open the filter panel to narrow down your search — tap the <strong>≡</strong> button (mobile) or use the sidebar on the left (desktop).</p>
+      <ul class="tut-list">
+        <li><strong>Division Tier</strong> — Toggle specific levels of play on or off.</li>
+        <li><strong>Admissions Selectivity</strong> — Find schools that match your academic profile.</li>
+        <li><strong>Conference</strong> — Focus on one athletic conference.</li>
+        <li><strong>State</strong> — Browse schools in a specific state.</li>
+        <li><strong>ADLTV Rank</strong> — Show only the top schools by career value.</li>
+      </ul>
+      <p class="tut-tip">💡 Use the search bar at the top of the filter panel to find a school by name or state.</p>
+    </div>
+
+    <div class="tut-slide">
+      <div class="tut-num">4 of 4</div>
+      <h2 class="tut-h">Take the Next Step</h2>
+      <p class="tut-p">Once you find a school you like, reach out early. Coaches notice student-athletes who make the first move.</p>
+      <div class="tut-action">
+        <div class="tut-action-icon">📋</div>
+        <div>
+          <div class="tut-action-title">Recruiting Questionnaire</div>
+          <div class="tut-action-desc">This is the official way to introduce yourself to a coaching staff. Look for the green button in the school's info card and fill it out as soon as possible.</div>
+        </div>
+      </div>
+      <div class="tut-action">
+        <div class="tut-action-icon">👥</div>
+        <div>
+          <div class="tut-action-title">Coaches Page</div>
+          <div class="tut-action-desc">See the full coaching staff and their contact info. A short, personal email introducing yourself can open the door to a real recruiting conversation.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tut-footer">
+      <div class="tut-pips">
+        <span class="tut-pip"></span><span class="tut-pip"></span>
+        <span class="tut-pip"></span><span class="tut-pip"></span>
+      </div>
+      <div class="tut-nav">
+        <button class="tut-ghost-btn" id="tutPrev">Back</button>
+        <button class="tut-primary-btn" id="tutNext">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const SEEN_KEY = 'gritos_cfb_tutorial_seen';
+  if (localStorage.getItem(SEEN_KEY)) return;
+
+  const overlay  = document.getElementById('tutOverlay');
+  const slides   = Array.from(document.querySelectorAll('.tut-slide'));
+  const pips     = Array.from(document.querySelectorAll('.tut-pip'));
+  const btnPrev  = document.getElementById('tutPrev');
+  const btnNext  = document.getElementById('tutNext');
+  const btnClose = document.getElementById('tutClose');
+  let current = 0;
+
+  function show(idx) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    pips.forEach((p, i) => p.classList.toggle('active', i === idx));
+    btnPrev.disabled = idx === 0;
+    btnNext.textContent = idx === slides.length - 1 ? 'Done ✓' : 'Next →';
+    current = idx;
+  }
+
+  function dismiss() {
+    localStorage.setItem(SEEN_KEY, '1');
+    overlay.classList.add('hidden');
+  }
+
+  btnNext.addEventListener('click', () => current < slides.length - 1 ? show(current + 1) : dismiss());
+  btnPrev.addEventListener('click', () => { if (current > 0) show(current - 1); });
+  btnClose.addEventListener('click', dismiss);
+  overlay.addEventListener('click', e => { if (e.target === overlay) dismiss(); });
+
+  show(0);
+})();
 </script>
 </body>
 </html>
