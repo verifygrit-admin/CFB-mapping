@@ -113,27 +113,31 @@
     position: fixed;
     pointer-events: none;
     z-index: 9999;
-    width: 110px;
-    height: 96px;
+    width: 200px;
+    height: 250px;
     display: none;
     transform-origin: center center;
   }
+  #helmetOverlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 36px rgba(0,0,0,0.55));
+  }
   #helmetOverlay.active {
     display: block;
-    animation: helmetReveal 3.0s ease forwards;
+    animation: helmetReveal 2.8s ease forwards;
   }
   @keyframes helmetReveal {
-    0%   { transform: translateY(0px)   scale(0.25, 0.25) rotate(-18deg); opacity: 0; }
-    16%  { transform: translateY(0px)   scale(1.08, 1.08) rotate(3deg);   opacity: 1; }
-    24%  { transform: translateY(0px)   scale(1.00, 1.00) rotate(0deg);   }
-    36%  { transform: translateY(-22px) scale(1.00, 1.00) rotate(0deg);   }
-    45%  { transform: translateY(3px)   scale(1.06, 0.90) rotate(0deg);   }
-    54%  { transform: translateY(-11px) scale(1.00, 1.00) rotate(0deg);   }
-    62%  { transform: translateY(1px)   scale(1.02, 0.97) rotate(0deg);   }
-    69%  { transform: translateY(0px)   scale(1.00, 1.00) rotate(0deg);   }
-    80%  { transform: translateY(0px)   scale(1.00, 1.00) rotate(0deg);   opacity: 1; }
-    94%  { transform: translateY(-4px)  scale(0.28, 0.28) rotate(8deg);   opacity: 0.3; }
-    100% { transform: translateY(0px)   scale(0.12, 0.12) rotate(12deg);  opacity: 0; }
+    0%   { transform: translateY(0px)   scale(0.08, 0.08) rotate(-12deg); opacity: 0; }
+    18%  { transform: translateY(0px)   scale(1.08, 1.08) rotate(2deg);   opacity: 1; }
+    26%  { transform: translateY(0px)   scale(1.00, 1.00) rotate(0deg);   }
+    38%  { transform: translateY(-32px) scale(1.00, 1.00) rotate(0deg);   }
+    48%  { transform: translateY(5px)   scale(1.05, 0.91) rotate(0deg);   }
+    58%  { transform: translateY(-16px) scale(1.00, 1.00) rotate(0deg);   }
+    66%  { transform: translateY(2px)   scale(1.01, 0.98) rotate(0deg);   }
+    74%  { transform: translateY(0px)   scale(1.00, 1.00) rotate(0deg);   }
+    100% { transform: translateY(0px)   scale(1.00, 1.00) rotate(0deg);   opacity: 1; }
   }
 
   /* LAYOUT */
@@ -627,41 +631,7 @@
 </header>
 
 <div id="helmetOverlay">
-  <svg width="110" height="96" viewBox="0 0 110 96" xmlns="http://www.w3.org/2000/svg">
-    <!-- Shadow -->
-    <ellipse cx="56" cy="93" rx="36" ry="3.5" fill="rgba(0,0,0,0.22)"/>
-    <!-- Helmet shell -->
-    <path d="M24,76 C12,60 10,42 18,26 C28,8 50,2 70,3 C90,4 108,18 110,40 C112,60 98,74 80,77 C62,80 36,80 24,76 Z" fill="#1b3d22"/>
-    <!-- Sheen highlight -->
-    <path d="M34,12 C48,5 66,5 80,12 Q63,7 46,16 Z" fill="rgba(255,255,255,0.16)"/>
-    <!-- Face opening -->
-    <path d="M24,76 C14,62 12,46 18,32 L32,27 L32,77 Z" fill="#112a17"/>
-    <!-- Face mask bars -->
-    <rect x="6"  y="32" width="28" height="4.5" rx="2.2" fill="#3d5a45"/>
-    <rect x="4"  y="46" width="30" height="4.5" rx="2.2" fill="#3d5a45"/>
-    <rect x="6"  y="60" width="28" height="4.5" rx="2.2" fill="#3d5a45"/>
-    <!-- Face mask vertical bar -->
-    <rect x="31" y="26" width="4.5" height="53" rx="2.2" fill="#3d5a45"/>
-    <!-- Ear hole -->
-    <circle cx="82" cy="57" r="9"   fill="#0d1e11"/>
-    <circle cx="82" cy="57" r="5.5" fill="#081409"/>
-    <!-- Chin strap -->
-    <path d="M24,76 Q40,90 56,90 Q72,90 80,77" stroke="#1e4428" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <!-- Subtle center stripe -->
-    <path d="M58,2 Q63,40 58,90" stroke="rgba(255,255,255,0.09)" stroke-width="7" fill="none"/>
-    <!-- Gritty OS logo decal — white circle -->
-    <circle cx="66" cy="36" r="22" fill="white"/>
-    <!-- Logo inner green -->
-    <circle cx="66" cy="36" r="16" fill="#1b3d22"/>
-    <!-- G letterform -->
-    <text x="66" y="43" text-anchor="middle"
-          font-family="'Barlow Condensed','Arial Black',sans-serif"
-          font-size="20" font-weight="900" fill="white">G</text>
-    <!-- Neon green chart arrow -->
-    <polyline points="50,54 57,42 63,50 82,22" stroke="#6ed430" stroke-width="3.5"
-              fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <polygon points="82,22 73,26 77,32" fill="#6ed430"/>
-  </svg>
+  <img src="helmet.png" alt="" role="presentation" draggable="false">
 </div>
 
 <div class="main">
@@ -1138,25 +1108,53 @@ applyFilters = function() { _origApplyFilters(); updateFilterBadge(); };
   document.getElementById('tutHelpBtn').addEventListener('click', open);
 
   overlay.classList.add('hidden');
-  if (!localStorage.getItem(SEEN_KEY)) setTimeout(() => open(), 3400);
+  if (!localStorage.getItem(SEEN_KEY)) setTimeout(() => open(), 4500);
 })();
 </script>
 <script>
 (function() {
   const btn  = document.getElementById('tutHelpBtn');
   const helm = document.getElementById('helmetOverlay');
+  const W = 200, H = 250;
+
   function runHelmet() {
-    const r = btn.getBoundingClientRect();
-    helm.style.left = (r.left + r.width  / 2 - 55) + 'px';
-    helm.style.top  = (r.top  + r.height / 2 - 48) + 'px';
-    btn.style.opacity = '0';
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Phase 1: appear at viewport center
+    helm.style.left       = Math.round(vw / 2 - W / 2) + 'px';
+    helm.style.top        = Math.round(vh / 2 - H / 2) + 'px';
+    helm.style.transform  = '';
+    helm.style.opacity    = '';
+    helm.style.transition = '';
+    btn.style.opacity     = '0';
+
     helm.classList.add('active');
+
     helm.addEventListener('animationend', () => {
       helm.classList.remove('active');
-      helm.style.display = '';
-      btn.style.opacity  = '';
+      helm.style.display = 'block'; // keep visible during phase 2
+
+      // Compute delta: overlay center → button center
+      const br  = btn.getBoundingClientRect();
+      const dx  = (br.left + br.width  / 2) - (vw / 2);
+      const dy  = (br.top  + br.height / 2) - (vh / 2);
+
+      // Phase 2: fly to button + shrink (double rAF ensures repaint before transition)
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        helm.style.transition = 'transform 0.5s cubic-bezier(0.6, 0, 1, 1), opacity 0.35s ease 0.15s';
+        helm.style.transform  = `translate(${dx}px, ${dy}px) scale(0.12)`;
+        helm.style.opacity    = '0';
+      }));
+
+      setTimeout(() => {
+        helm.style.cssText = '';
+        btn.style.opacity  = '';
+      }, 680);
+
     }, { once: true });
   }
+
   window.addEventListener('load', () => setTimeout(runHelmet, 700));
 })();
 </script>
