@@ -220,6 +220,75 @@
   .filter-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   .filter-scroll .filter-btn { padding: 3px 8px; font-size: 11px; }
 
+  /* STATE SEARCHABLE MULTISELECT */
+  .state-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  .state-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #2e6b18;
+    border: 1px solid #2e6b18;
+    color: #c8f5a0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .state-chip-remove {
+    background: none;
+    border: none;
+    color: #c8f5a0;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    opacity: 0.7;
+  }
+  .state-chip-remove:hover { opacity: 1; }
+  .state-search-wrap { position: relative; }
+  .state-search-wrap input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+  }
+  .state-search-wrap input:focus { outline: none; border-color: var(--accent); }
+  .state-search-wrap input::placeholder { color: var(--muted); }
+  .state-dropdown {
+    display: none;
+    position: absolute;
+    left: 0; right: 0;
+    top: calc(100% + 2px);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    max-height: 160px;
+    overflow-y: auto;
+    z-index: 2000;
+  }
+  .state-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .state-dropdown-item:hover { background: var(--border); color: var(--accent); }
+
   /* SELECT DROPDOWNS */
   select {
     width: 100%;
@@ -464,6 +533,7 @@
       font-size: 13px;
     }
     .filter-group { gap: 8px; }
+    #stateSearch { font-size: 16px; }
   }
 
   @media (max-width: 480px) {
@@ -692,19 +762,23 @@
 
     <div class="sidebar-section">
       <div class="sidebar-label">ADLTV Rank (Top N)</div>
-      <select id="adltvFilter">
-        <option value="ALL">All Rankings</option>
-        <option value="25">Top 25</option>
-        <option value="50">Top 50</option>
-        <option value="100">Top 100</option>
-        <option value="150">Top 150</option>
-        <option value="200">Top 200</option>
-      </select>
+      <div class="filter-group" id="adltvFilters">
+        <button class="filter-btn all-btn active" data-group="adltv" data-value="ALL">All</button>
+        <button class="filter-btn" data-group="adltv" data-value="25">Top 25</button>
+        <button class="filter-btn" data-group="adltv" data-value="50">Top 50</button>
+        <button class="filter-btn" data-group="adltv" data-value="100">Top 100</button>
+        <button class="filter-btn" data-group="adltv" data-value="150">Top 150</button>
+        <button class="filter-btn" data-group="adltv" data-value="200">Top 200</button>
+      </div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-label">State</div>
-      <div class="filter-scroll" id="stateFilters"></div>
+      <div id="stateChips" class="state-chips"></div>
+      <div class="state-search-wrap">
+        <input type="text" id="stateSearch" placeholder="Search states…" autocomplete="off">
+        <div id="stateDropdown" class="state-dropdown"></div>
+      </div>
     </div>
 
     <div class="sidebar-section">
@@ -767,9 +841,10 @@ const TYPE_VALUES  = ['Super Elite','Elite','Very Selective','Selective','Somewh
 const allConfs     = [...new Set(SCHOOLS.map(s => s.conf))].sort();
 const allStates    = [...new Set(SCHOOLS.map(s => s.state))].sort();
 
-let activeTypes  = new Set(TYPE_VALUES);
-let activeConfs  = new Set(allConfs);
-let activeStates = new Set(allStates);
+let activeTypes    = new Set(TYPE_VALUES);
+let activeConfs    = new Set(allConfs);
+let activeAdltv    = 'ALL';
+const selectedStates = new Set();
 
 // Build a scrollable toggle-button group dynamically
 function buildToggleGroup(containerId, values, groupName) {
@@ -791,7 +866,6 @@ function buildToggleGroup(containerId, values, groupName) {
 }
 
 buildToggleGroup('confFilters',  allConfs,   'conf');
-buildToggleGroup('stateFilters', allStates,  'state');
 
 // Build markers
 function makeIcon(tier) {
@@ -880,7 +954,6 @@ const allMarkers = SCHOOLS.map(s => {
 
 function applyFilters() {
   const search   = document.getElementById('searchInput').value.toLowerCase().trim();
-  const adltvVal = document.getElementById('adltvFilter').value;
 
   clusterGroup.clearLayers();
   let count = 0;
@@ -890,11 +963,11 @@ function applyFilters() {
     if (!activeTiers.has(s.tier))   return;
     if (!activeTypes.has(s.type))   return;
     if (!activeConfs.has(s.conf))   return;
-    if (!activeStates.has(s.state)) return;
+    if (selectedStates.size > 0 && !selectedStates.has(s.state)) return;
     if (search && !s.name.toLowerCase().includes(search) && !s.state.toLowerCase().includes(search) && !s.city.toLowerCase().includes(search)) return;
-    if (adltvVal !== 'ALL') {
+    if (activeAdltv !== 'ALL') {
       const rank = parseInt(s.adltv_rank);
-      if (isNaN(rank) || rank > parseInt(adltvVal)) return;
+      if (isNaN(rank) || rank > parseInt(activeAdltv)) return;
     }
     clusterGroup.addLayer(m);
     count++;
@@ -931,23 +1004,89 @@ function setupToggleGroup(groupName, activeSet, allValues) {
 setupToggleGroup('tier',  activeTiers,  Object.keys(TIER_COLORS));
 setupToggleGroup('type',  activeTypes,  TYPE_VALUES);
 setupToggleGroup('conf',  activeConfs,  allConfs);
-setupToggleGroup('state', activeStates, allStates);
 
-// Search + ADLTV (still single-value inputs)
-['searchInput','adltvFilter'].forEach(id => {
-  document.getElementById(id).addEventListener('input',  applyFilters);
-  document.getElementById(id).addEventListener('change', applyFilters);
+// ADLTV single-select buttons (thresholds — only one active at a time)
+document.querySelectorAll('[data-group="adltv"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const val = btn.dataset.value;
+    activeAdltv = (activeAdltv === val && val !== 'ALL') ? 'ALL' : val;
+    document.querySelectorAll('[data-group="adltv"]').forEach(b =>
+      b.classList.toggle('active', b.dataset.value === activeAdltv)
+    );
+    applyFilters();
+    updateFilterBadge();
+  });
 });
+
+// State searchable multiselect
+function renderStateChips() {
+  const chips = document.getElementById('stateChips');
+  chips.innerHTML = '';
+  selectedStates.forEach(state => {
+    const chip = document.createElement('span');
+    chip.className = 'state-chip';
+    chip.innerHTML = `${state} <button class="state-chip-remove" data-state="${state}" aria-label="Remove ${state}">&#x2715;</button>`;
+    chips.appendChild(chip);
+  });
+}
+
+function renderStateDropdown(query) {
+  const dropdown = document.getElementById('stateDropdown');
+  const matches = allStates.filter(s => s.toLowerCase().includes(query.toLowerCase()) && !selectedStates.has(s));
+  if (!query || matches.length === 0) { dropdown.style.display = 'none'; return; }
+  dropdown.innerHTML = '';
+  matches.forEach(state => {
+    const item = document.createElement('button');
+    item.className = 'state-dropdown-item';
+    item.type = 'button';
+    item.textContent = state;
+    item.addEventListener('click', () => {
+      selectedStates.add(state);
+      document.getElementById('stateSearch').value = '';
+      renderStateChips();
+      renderStateDropdown('');
+      applyFilters();
+      updateFilterBadge();
+    });
+    dropdown.appendChild(item);
+  });
+  dropdown.style.display = 'block';
+}
+
+document.getElementById('stateSearch').addEventListener('input', e => renderStateDropdown(e.target.value));
+
+document.getElementById('stateChips').addEventListener('click', e => {
+  const btn = e.target.closest('.state-chip-remove');
+  if (!btn) return;
+  selectedStates.delete(btn.dataset.state);
+  renderStateChips();
+  applyFilters();
+  updateFilterBadge();
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#stateSearch') && !e.target.closest('#stateDropdown')) {
+    document.getElementById('stateDropdown').style.display = 'none';
+  }
+});
+
+// School name search
+document.getElementById('searchInput').addEventListener('input',  applyFilters);
+document.getElementById('searchInput').addEventListener('change', applyFilters);
 
 // Reset
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('searchInput').value = '';
-  document.getElementById('adltvFilter').value = 'ALL';
-  activeTiers  = new Set(Object.keys(TIER_COLORS));
-  activeTypes  = new Set(TYPE_VALUES);
-  activeConfs  = new Set(allConfs);
-  activeStates = new Set(allStates);
+  activeTiers = new Set(Object.keys(TIER_COLORS));
+  activeTypes = new Set(TYPE_VALUES);
+  activeConfs = new Set(allConfs);
+  activeAdltv = 'ALL';
+  selectedStates.clear();
+  renderStateChips();
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.add('active'));
+  document.querySelectorAll('[data-group="adltv"]').forEach(b =>
+    b.classList.toggle('active', b.dataset.value === 'ALL')
+  );
   applyFilters();
   updateFilterBadge();
 });
@@ -980,8 +1119,9 @@ drawerOverlay.addEventListener('click', closeDrawer);
 function updateFilterBadge() {
   let count = 0;
   if (document.getElementById('searchInput').value.trim()) count++;
-  if (document.getElementById('adltvFilter').value !== 'ALL') count++;
-  ['tier', 'type', 'conf', 'state'].forEach(group => {
+  if (activeAdltv !== 'ALL') count++;
+  if (selectedStates.size > 0) count++;
+  ['tier', 'type', 'conf'].forEach(group => {
     const total  = document.querySelectorAll(`[data-group="${group}"]`).length;
     const active = document.querySelectorAll(`[data-group="${group}"].active`).length;
     if (active < total) count++;
