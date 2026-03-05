@@ -757,7 +757,9 @@
 
     <div class="sidebar-section">
       <div class="sidebar-label">Conference</div>
-      <div class="filter-scroll" id="confFilters"></div>
+      <select id="confFilter">
+        <option value="ALL">All Conferences</option>
+      </select>
     </div>
 
     <div class="sidebar-section">
@@ -842,7 +844,7 @@ const allConfs     = [...new Set(SCHOOLS.map(s => s.conf))].sort();
 const allStates    = [...new Set(SCHOOLS.map(s => s.state))].sort();
 
 let activeTypes    = new Set(TYPE_VALUES);
-let activeConfs    = new Set(allConfs);
+let activeConf     = 'ALL';
 let activeAdltv    = 'ALL';
 const selectedStates = new Set();
 
@@ -865,7 +867,7 @@ function buildToggleGroup(containerId, values, groupName) {
   });
 }
 
-buildToggleGroup('confFilters',  allConfs,   'conf');
+// Conference dropdown is populated dynamically via rebuildConfDropdown()
 
 // Build markers
 function makeIcon(tier) {
@@ -962,7 +964,7 @@ function applyFilters() {
     const s = m._schoolData;
     if (!activeTiers.has(s.tier))   return;
     if (!activeTypes.has(s.type))   return;
-    if (!activeConfs.has(s.conf))   return;
+    if (activeConf !== 'ALL' && s.conf !== activeConf) return;
     if (selectedStates.size > 0 && !selectedStates.has(s.state)) return;
     if (search && !s.name.toLowerCase().includes(search) && !s.state.toLowerCase().includes(search) && !s.city.toLowerCase().includes(search)) return;
     if (activeAdltv !== 'ALL') {
@@ -1003,7 +1005,38 @@ function setupToggleGroup(groupName, activeSet, allValues) {
 
 setupToggleGroup('tier',  activeTiers,  Object.keys(TIER_COLORS));
 setupToggleGroup('type',  activeTypes,  TYPE_VALUES);
-setupToggleGroup('conf',  activeConfs,  allConfs);
+
+// Conference — single-select dropdown, options filtered to active tiers
+function rebuildConfDropdown() {
+  const availableConfs = [...new Set(
+    SCHOOLS.filter(s => activeTiers.has(s.tier)).map(s => s.conf)
+  )].sort();
+  const sel = document.getElementById('confFilter');
+  sel.innerHTML = '<option value="ALL">All Conferences</option>';
+  availableConfs.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    sel.appendChild(opt);
+  });
+  if (activeConf !== 'ALL' && !availableConfs.includes(activeConf)) {
+    activeConf = 'ALL';
+  }
+  sel.value = activeConf;
+}
+
+rebuildConfDropdown();
+
+document.getElementById('confFilter').addEventListener('change', e => {
+  activeConf = e.target.value;
+  applyFilters();
+  updateFilterBadge();
+});
+
+// Rebuild conference options whenever tiers change
+document.querySelectorAll('[data-group="tier"]').forEach(btn => {
+  btn.addEventListener('click', rebuildConfDropdown);
+});
 
 // ADLTV single-select buttons (thresholds — only one active at a time)
 document.querySelectorAll('[data-group="adltv"]').forEach(btn => {
@@ -1079,8 +1112,9 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('searchInput').value = '';
   activeTiers = new Set(Object.keys(TIER_COLORS));
   activeTypes = new Set(TYPE_VALUES);
-  activeConfs = new Set(allConfs);
+  activeConf  = 'ALL';
   activeAdltv = 'ALL';
+  rebuildConfDropdown();
   selectedStates.clear();
   renderStateChips();
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.add('active'));
@@ -1121,7 +1155,8 @@ function updateFilterBadge() {
   if (document.getElementById('searchInput').value.trim()) count++;
   if (activeAdltv !== 'ALL') count++;
   if (selectedStates.size > 0) count++;
-  ['tier', 'type', 'conf'].forEach(group => {
+  if (activeConf !== 'ALL') count++;
+  ['tier', 'type'].forEach(group => {
     const total  = document.querySelectorAll(`[data-group="${group}"]`).length;
     const active = document.querySelectorAll(`[data-group="${group}"].active`).length;
     if (active < total) count++;
