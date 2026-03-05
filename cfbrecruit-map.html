@@ -206,6 +206,20 @@
     width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
   }
 
+  /* SCROLLABLE FILTER GROUP (Conference, State) */
+  .filter-scroll {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-height: 116px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+  .filter-scroll::-webkit-scrollbar { width: 4px; }
+  .filter-scroll::-webkit-scrollbar-track { background: var(--surface2); border-radius: 2px; }
+  .filter-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .filter-scroll .filter-btn { padding: 3px 8px; font-size: 11px; }
+
   /* SELECT DROPDOWNS */
   select {
     width: 100%;
@@ -660,22 +674,20 @@
 
     <div class="sidebar-section">
       <div class="sidebar-label">Admissions Selectivity</div>
-      <select id="typeFilter">
-        <option value="ALL">All Types</option>
-        <option value="Super Elite">Super Elite (≤10%)</option>
-        <option value="Elite">Elite (11–19%)</option>
-        <option value="Very Selective">Very Selective (20–29%)</option>
-        <option value="Selective">Selective (30–49%)</option>
-        <option value="Somewhat Selective">Somewhat Selective (50–67%)</option>
-        <option value="Standard">Standard (&gt;67%)</option>
-      </select>
+      <div class="filter-group" id="typeFilters">
+        <button class="filter-btn all-btn active" data-group="type" data-value="ALL">All</button>
+        <button class="filter-btn active" data-group="type" data-value="Super Elite">Super Elite</button>
+        <button class="filter-btn active" data-group="type" data-value="Elite">Elite</button>
+        <button class="filter-btn active" data-group="type" data-value="Very Selective">Very Sel.</button>
+        <button class="filter-btn active" data-group="type" data-value="Selective">Selective</button>
+        <button class="filter-btn active" data-group="type" data-value="Somewhat Selective">Somewhat</button>
+        <button class="filter-btn active" data-group="type" data-value="Standard">Standard</button>
+      </div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-label">Conference</div>
-      <select id="confFilter">
-        <option value="ALL">All Conferences</option>
-      </select>
+      <div class="filter-scroll" id="confFilters"></div>
     </div>
 
     <div class="sidebar-section">
@@ -692,9 +704,7 @@
 
     <div class="sidebar-section">
       <div class="sidebar-label">State</div>
-      <select id="stateFilter">
-        <option value="ALL">All States</option>
-      </select>
+      <div class="filter-scroll" id="stateFilters"></div>
     </div>
 
     <div class="sidebar-section">
@@ -752,14 +762,36 @@ const clusterGroup = L.markerClusterGroup({
 });
 map.addLayer(clusterGroup);
 
-// Populate dropdowns
-const confs = [...new Set(SCHOOLS.map(s => s.conf))].sort();
-const confSel = document.getElementById('confFilter');
-confs.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; confSel.appendChild(o); });
+// ── Multi-select filter state ──────────────────────────────────────────────
+const TYPE_VALUES  = ['Super Elite','Elite','Very Selective','Selective','Somewhat Selective','Standard'];
+const allConfs     = [...new Set(SCHOOLS.map(s => s.conf))].sort();
+const allStates    = [...new Set(SCHOOLS.map(s => s.state))].sort();
 
-const states = [...new Set(SCHOOLS.map(s => s.state))].sort();
-const stateSel = document.getElementById('stateFilter');
-states.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; stateSel.appendChild(o); });
+let activeTypes  = new Set(TYPE_VALUES);
+let activeConfs  = new Set(allConfs);
+let activeStates = new Set(allStates);
+
+// Build a scrollable toggle-button group dynamically
+function buildToggleGroup(containerId, values, groupName) {
+  const container = document.getElementById(containerId);
+  const allBtn = document.createElement('button');
+  allBtn.className = 'filter-btn all-btn active';
+  allBtn.dataset.group = groupName;
+  allBtn.dataset.value = 'ALL';
+  allBtn.textContent = 'All';
+  container.appendChild(allBtn);
+  values.forEach(v => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn active';
+    btn.dataset.group = groupName;
+    btn.dataset.value = v;
+    btn.textContent = v;
+    container.appendChild(btn);
+  });
+}
+
+buildToggleGroup('confFilters',  allConfs,   'conf');
+buildToggleGroup('stateFilters', allStates,  'state');
 
 // Build markers
 function makeIcon(tier) {
@@ -847,10 +879,7 @@ const allMarkers = SCHOOLS.map(s => {
 });
 
 function applyFilters() {
-  const search = document.getElementById('searchInput').value.toLowerCase().trim();
-  const typeVal = document.getElementById('typeFilter').value;
-  const confVal = document.getElementById('confFilter').value;
-  const stateVal = document.getElementById('stateFilter').value;
+  const search   = document.getElementById('searchInput').value.toLowerCase().trim();
   const adltvVal = document.getElementById('adltvFilter').value;
 
   clusterGroup.clearLayers();
@@ -858,11 +887,11 @@ function applyFilters() {
 
   allMarkers.forEach(m => {
     const s = m._schoolData;
-    if (!activeTiers.has(s.tier)) return;
+    if (!activeTiers.has(s.tier))   return;
+    if (!activeTypes.has(s.type))   return;
+    if (!activeConfs.has(s.conf))   return;
+    if (!activeStates.has(s.state)) return;
     if (search && !s.name.toLowerCase().includes(search) && !s.state.toLowerCase().includes(search) && !s.city.toLowerCase().includes(search)) return;
-    if (typeVal !== 'ALL' && s.type !== typeVal) return;
-    if (confVal !== 'ALL' && s.conf !== confVal) return;
-    if (stateVal !== 'ALL' && s.state !== stateVal) return;
     if (adltvVal !== 'ALL') {
       const rank = parseInt(s.adltv_rank);
       if (isNaN(rank) || rank > parseInt(adltvVal)) return;
@@ -874,57 +903,53 @@ function applyFilters() {
   document.getElementById('visibleCount').textContent = count;
 }
 
-// Tier toggle buttons
-document.querySelectorAll('[data-group="tier"]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const val = btn.dataset.value;
-    if (val === 'ALL') {
-      allTiersOn = !allTiersOn;
-      if (allTiersOn) {
-        activeTiers = new Set(Object.keys(TIER_COLORS));
-        document.querySelectorAll('[data-group="tier"]').forEach(b => b.classList.add('active'));
+// ── Generic multi-select toggle group handler ─────────────────────────────
+function setupToggleGroup(groupName, activeSet, allValues) {
+  document.querySelectorAll(`[data-group="${groupName}"]`).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.dataset.value;
+      const allBtn = document.querySelector(`[data-group="${groupName}"][data-value="ALL"]`);
+      if (val === 'ALL') {
+        if (activeSet.size === allValues.length) {
+          activeSet.clear();
+          document.querySelectorAll(`[data-group="${groupName}"]`).forEach(b => b.classList.remove('active'));
+        } else {
+          allValues.forEach(v => activeSet.add(v));
+          document.querySelectorAll(`[data-group="${groupName}"]`).forEach(b => b.classList.add('active'));
+        }
       } else {
-        activeTiers.clear();
-        document.querySelectorAll('[data-group="tier"]').forEach(b => b.classList.remove('active'));
-        btn.classList.remove('active'); // all btn off too
+        if (activeSet.has(val)) { activeSet.delete(val); btn.classList.remove('active'); }
+        else                    { activeSet.add(val);    btn.classList.add('active');    }
+        allBtn.classList.toggle('active', activeSet.size === allValues.length);
       }
-    } else {
-      if (activeTiers.has(val)) {
-        activeTiers.delete(val);
-        btn.classList.remove('active');
-      } else {
-        activeTiers.add(val);
-        btn.classList.add('active');
-      }
-      // sync all button
-      const allBtn = document.querySelector('[data-value="ALL"]');
-      if (activeTiers.size === Object.keys(TIER_COLORS).length) {
-        allBtn.classList.add('active');
-      } else {
-        allBtn.classList.remove('active');
-      }
-    }
-    applyFilters();
+      applyFilters();
+      updateFilterBadge();
+    });
   });
-});
+}
 
-// Other filters
-['searchInput','typeFilter','confFilter','stateFilter','adltvFilter'].forEach(id => {
-  document.getElementById(id).addEventListener('input', applyFilters);
+setupToggleGroup('tier',  activeTiers,  Object.keys(TIER_COLORS));
+setupToggleGroup('type',  activeTypes,  TYPE_VALUES);
+setupToggleGroup('conf',  activeConfs,  allConfs);
+setupToggleGroup('state', activeStates, allStates);
+
+// Search + ADLTV (still single-value inputs)
+['searchInput','adltvFilter'].forEach(id => {
+  document.getElementById(id).addEventListener('input',  applyFilters);
   document.getElementById(id).addEventListener('change', applyFilters);
 });
 
 // Reset
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('searchInput').value = '';
-  document.getElementById('typeFilter').value = 'ALL';
-  document.getElementById('confFilter').value = 'ALL';
-  document.getElementById('stateFilter').value = 'ALL';
   document.getElementById('adltvFilter').value = 'ALL';
-  activeTiers = new Set(Object.keys(TIER_COLORS));
-  allTiersOn = true;
-  document.querySelectorAll('[data-group="tier"]').forEach(b => b.classList.add('active'));
+  activeTiers  = new Set(Object.keys(TIER_COLORS));
+  activeTypes  = new Set(TYPE_VALUES);
+  activeConfs  = new Set(allConfs);
+  activeStates = new Set(allStates);
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.add('active'));
   applyFilters();
+  updateFilterBadge();
 });
 
 // Initial load
@@ -955,13 +980,12 @@ drawerOverlay.addEventListener('click', closeDrawer);
 function updateFilterBadge() {
   let count = 0;
   if (document.getElementById('searchInput').value.trim()) count++;
-  if (document.getElementById('typeFilter').value !== 'ALL') count++;
-  if (document.getElementById('confFilter').value !== 'ALL') count++;
-  if (document.getElementById('stateFilter').value !== 'ALL') count++;
   if (document.getElementById('adltvFilter').value !== 'ALL') count++;
-  const allTiersActive = document.querySelectorAll('[data-group="tier"].active').length ===
-    document.querySelectorAll('[data-group="tier"]').length;
-  if (!allTiersActive) count++;
+  ['tier', 'type', 'conf', 'state'].forEach(group => {
+    const total  = document.querySelectorAll(`[data-group="${group}"]`).length;
+    const active = document.querySelectorAll(`[data-group="${group}"].active`).length;
+    if (active < total) count++;
+  });
   drawerToggle.setAttribute('data-count', count);
 }
 
