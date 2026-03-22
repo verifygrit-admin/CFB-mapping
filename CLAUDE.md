@@ -1,5 +1,8 @@
 # CFB-mapping
 
+**Repo**: `https://github.com/verifygrit-admin/CFB-mapping` (public)
+**Path**: `C:\Users\chris\dev\CFB-mapping`
+
 ## Purpose
 Interactive map of all 661 NCAA college football programs for GritOS recruiting intelligence. Displays schools as clickable markers with recruiting data, filterable by division and tier.
 
@@ -77,6 +80,37 @@ Drop updated CSV into this folder and run the injection script from that project
 - Primary accent (CSS var): `#6ed430` (neon green — hover/brand use only); active filter buttons use `#2e6b18` (dark forest green) with `#c8f5a0` light text
 - Tier colors: Power 4 `#f5a623`, FCS `#81c784`, FBS `#ce93d8`, D2 `#ef9a9a`, D3 `#b0bec5`, G5 `#4fc3f7`
 - Fonts: Barlow Condensed (headers/logo), Barlow (body)
+
+### Marker Cluster Colors
+- Small cluster: `rgba(46,107,24)` background, `#c8f5a0` text
+- Medium cluster: `rgba(36,84,18)` background, `#c8f5a0` text
+- Large cluster: `rgba(26,60,13)` background, `#c8f5a0` text
+
+## Helmet Animation
+
+On page load, `helmet.png` (RGBA PNG, 1080x1350, in project root) plays a two-phase animation:
+
+**Phase 1** — CSS `@keyframes helmetReveal` over 2.8s: image appears at viewport center, grows and bounces twice.
+
+**Phase 2** — JS transition over 0.5s: image translates to `#tutHelpBtn` using `translate(dx,dy) scale(0.12)`, flying from center to the help button.
+
+First-time tutorial auto-open fires 4.5s after page load. All animation JS lives in the final `<script>` block.
+
+## Mobile Constraints
+
+- `#tutHelpBtn` tap target: 44px minimum
+- iOS zoom fix: `font-size: 16px` on all input/select at `≤768px`
+- Header padding tightened at mobile breakpoints
+- `-webkit-tap-highlight-color` suppressed globally
+- School count hidden at `≤360px` viewport width
+
+## Data Stewardship
+
+**David (Data Steward)** owns master DB integrity and link rot monitoring. Trigger: `david -`.
+
+Source of truth for q_link and coach_link: Google Sheet (ID: `1Pc4LOnD1fhQz-9pI_CUEDaAMDfTkUXcCRTVDfoDWvqo`, tab: GrittyOS DB). CSV in recruitingq-url-extract is a pipeline artifact — downstream of Sheet.
+
+**PROTO-GLOBAL-010**: Any output used as a build pre-condition must name the source artifact explicitly.
 
 ## Deployment
 Static file — open directly in browser or serve from any static host. Push to GitHub; no CI/CD configured.
