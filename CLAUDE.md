@@ -1,5 +1,7 @@
 # CFB-mapping
 
+Last updated: 2026-03-22 (Phase 4 P4 — DEC-GLOBAL-030)
+
 **Repo**: `https://github.com/verifygrit-admin/CFB-mapping` (public)
 **Path**: `C:\Users\chris\dev\CFB-mapping`
 
@@ -78,7 +80,7 @@ Drop updated CSV into this folder and run the injection script from that project
 ## Design System
 - Dark theme — CSS custom properties in `:root`
 - Primary accent (CSS var): `#6ed430` (neon green — hover/brand use only); active filter buttons use `#2e6b18` (dark forest green) with `#c8f5a0` light text
-- Tier colors: Power 4 `#f5a623`, FCS `#81c784`, FBS `#ce93d8`, D2 `#ef9a9a`, D3 `#b0bec5`, G5 `#4fc3f7`
+- Tier colors: Power 4 `#f5a623`, FCS `#81c784`, FBS Ind `#ce93d8`, D2 `#ef9a9a`, D3 `#b0bec5`, G5 `#4fc3f7`
 - Fonts: Barlow Condensed (headers/logo), Barlow (body)
 
 ### Marker Cluster Colors
